@@ -201,7 +201,7 @@ export default function Hero() {
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 1, delay: 1.4, ease: "easeInOut" }}
-                  className="absolute -bottom-2 left-0 h-1 bg-[#00D2D2]"
+                  className="absolute -bottom-2 left-0 h-1 mb-1 md:mb-0 bg-[#00D2D2]"
                 />
               </span>
               <br />
@@ -311,11 +311,11 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.2 }}
-            className="lg:col-span-2 flex justify-center items-center relative"
+            className="lg:col-span-2 flex justify-center items-center relative mb-4 lg:mb-0"
             style={{ perspective: "1000px" }}
           >
             <motion.div
-              className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-[#00D2D2]/30 bg-[#112240]/50 backdrop-blur-sm"
+              className="mb-2 relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-[#00D2D2]/30 bg-[#112240]/50 backdrop-blur-sm"
               initial={{ scale: 0.8, rotateX: 10, rotateY: 10 }}
               animate={{ scale: 1, rotateX: 0, rotateY: 0 }}
               transition={{ duration: 1.5, ease: "easeOut", delay: 0.4 }}
