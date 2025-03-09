@@ -1,251 +1,286 @@
-import { useState, useRef } from "react"
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
-import { experienceData } from "../data/data"
-import { Briefcase, Calendar, Building, X } from "lucide-react"
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { experienceData } from "../data/data";
+import { Briefcase, Calendar, Building, X, ChevronRight, Award } from "lucide-react";
 
-export default function Experience() {
-  const [activeIndex, setActiveIndex] = useState(null)
-  const sectionRef = useRef(null)
+export default function ProfessionalExperience() {
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [hoverIndex, setHoverIndex] = useState(null);
+  const sectionRef = useRef(null);
   
-  // Parallax effect for background
+  // Subtle background parallax effect
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
-  })
-  const yBG = useTransform(scrollYProgress, [0, 1], [0, -80])
-
+  });
+  const yBG = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  
   // Handle card interactions
   const handleCardClick = (index) => {
-    setActiveIndex(activeIndex === index ? null : index)
-  }
+    setActiveIndex(activeIndex === index ? null : index);
+    if (activeIndex !== index) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  };
+
+  // Responsive adjustments
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Animation variants with more subtle effects
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: i => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }),
+    hover: {
+      y: -6,
+      boxShadow: "0 15px 30px rgba(0, 0, 0, 0.15)",
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
-    <section id="experience" ref={sectionRef} className="relative py-24 overflow-hidden">
-      {/* Dynamic Background */}
+    <section id="experience" ref={sectionRef} className="relative py-20 md:py-28 overflow-hidden">
+      {/* Professional gradient background */}
       <motion.div 
         style={{ y: yBG }}
-        className="absolute inset-0 bg-gradient-to-br from-[#0A192F] to-[#112240] opacity-95 z-0"
+        className="absolute inset-0 bg-gradient-to-b from-[#0A192F] to-[#112240] z-0"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#00D2D2_0.3px,transparent_0.8px)] bg-[length:25px_25px] opacity-15" />
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
       </motion.div>
 
-      {/* Header */}
+      {/* Professional Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="relative z-10 mb-20 text-center"
+        className="relative z-10 mb-14 md:mb-20 text-center px-4 md:px-6"
       >
-        <h2 className="text-4xl font-semibold text-white mb-4 tracking-tight">
+        <div className="inline-flex items-center justify-center mb-6">
+          <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#0A192F] border border-[#64FFDA]">
+            <Briefcase size={20} className="text-[#64FFDA]" />
+          </div>
+        </div>
+        
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
           Professional Experience
-          <motion.span 
-            className="inline-block w-2 h-2 bg-[#00D2D2] rounded-full ml-2 align-super"
-            animate={{ opacity: [1, 0.5, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
         </h2>
-        <motion.div 
-          className="w-20 h-1 bg-[#00D2D2] mx-auto rounded-full"
-          initial={{ width: 0 }}
-          whileInView={{ width: 80 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        />
+        
+        <p className="text-gray-300 max-w-2xl mx-auto text-base">
+          A detailed overview of my career path and key achievements
+        </p>
+        
+        <div className="w-20 h-px bg-[#64FFDA]/50 mx-auto mt-6" />
       </motion.div>
 
-      {/* Card Grid */}
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-6 max-w-7xl mx-auto">
+      {/* Timeline connector - vertical line */}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6">
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-[#64FFDA]/40 to-transparent h-full top-0 hidden lg:block" />
+      </div>
+
+      {/* Experience Cards with Alternating Layout */}
+      <div className="relative z-10 max-w-6xl mx-auto">
         {experienceData.map((item, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-            viewport={{ once: true }}
-            className="group"
+            custom={index}
+            initial="hidden"
+            whileInView="visible"
+            variants={cardVariants}
+            viewport={{ once: true, margin: "-50px" }}
+            className={`mb-8 md:mb-12 px-4 md:px-6 ${
+              index % 2 === 0 ? 'lg:ml-auto lg:mr-8 lg:pr-8 lg:pl-0' : 'lg:mr-auto lg:ml-8 lg:pl-8 lg:pr-0'
+            } lg:w-5/12 relative`}
           >
-            {/* Collapsed Card */}
+            {/* Timeline node for desktop */}
+            <div className={`absolute top-8 hidden lg:block ${
+              index % 2 === 0 ? '-left-3' : '-right-3'
+            }`}>
+              <div className="w-6 h-6 rounded-full bg-[#0A192F] border border-[#64FFDA] flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-[#64FFDA]" />
+              </div>
+              <div className={`absolute top-1/2 transform -translate-y-1/2 w-3 h-px bg-[#64FFDA]/60 ${
+                index % 2 === 0 ? 'right-full' : 'left-full'
+              }`} />
+            </div>
+            
+            {/* Experience Card */}
             <motion.div
-              className={`relative bg-[#112240]/90 backdrop-blur-sm rounded-xl shadow-xl cursor-pointer border border-[#00D2D2]/20 ${
-                activeIndex === index ? 'hidden' : 'block'
-              }`}
-              whileHover={{ 
-                y: -5,
-                boxShadow: "0 15px 30px rgba(0, 210, 210, 0.15)"
-              }}
+              className="relative bg-[#112240] rounded-lg shadow-md border border-[#64FFDA]/10 overflow-hidden cursor-pointer"
+              whileHover="hover"
+              variants={cardVariants}
               onClick={() => handleCardClick(index)}
-              layoutId={`container-${index}`}
+              onMouseEnter={() => setHoverIndex(index)}
+              onMouseLeave={() => setHoverIndex(null)}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#00D2D2]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <div className="p-6 relative z-10">
-                <div className="flex justify-between items-start mb-6">
+              {/* Card header */}
+              <div className="border-b border-[#64FFDA]/10 p-5">
+                <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">{item.role}</h3>
+                    <span className="inline-block px-2 py-1 rounded text-xs font-medium text-[#64FFDA] bg-[#64FFDA]/10 mb-3">
+                      {item.period}
+                    </span>
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-2">{item.role}</h3>
                     <div className="flex items-center space-x-2">
-                      <Building size={16} className="text-[#00D2D2]" />
-                      <h4 className="text-base text-gray-300">{item.company}</h4>
+                      <Building size={14} className="text-[#64FFDA]" />
+                      <h4 className="text-sm text-gray-300">{item.company}</h4>
                     </div>
                   </div>
-                  <motion.div 
-                    className="py-1 px-3 rounded-full bg-[#0A192F] border border-[#00D2D2]/30 whitespace-nowrap"
-                    whileHover={{ scale: 1.05, backgroundColor: "#00D2D2", color: "#0A192F" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center space-x-1">
-                      <Calendar size={12} className="text-[#00D2D2]" />
-                      <span className="text-[#00D2D2] text-xs font-medium">{item.period}</span>
-                    </div>
-                  </motion.div>
+                  
+                  <div className="w-8 h-8 rounded bg-[#64FFDA]/10 flex items-center justify-center">
+                    <ChevronRight size={16} className="text-[#64FFDA]" />
+                  </div>
                 </div>
-
-                <p className="text-gray-400 text-sm mb-4 line-clamp-2">{item.responsibilities[0]}</p>
-
+              </div>
+              
+              {/* Card content preview */}
+              <div className="p-5">
+                <p className="text-gray-300 text-sm mb-4 line-clamp-2">{item.responsibilities[0]}</p>
+                
                 {/* Tech Tags */}
                 <div className="flex flex-wrap gap-2">
-                  {item.technologies.slice(0, 3).map((tech, idx) => (
-                    <motion.span
+                  {item.technologies.slice(0, isMobile ? 3 : 4).map((tech, idx) => (
+                    <span
                       key={idx}
-                      className="px-2 py-1 bg-[#1D2D50]/80 text-xs rounded-full text-gray-300 border border-[#00D2D2]/20"
-                      whileHover={{ 
-                        backgroundColor: "#00D2D2", 
-                        color: "#0A192F",
-                        transition: { duration: 0.2 }
-                      }}
+                      className="px-2 py-1 bg-[#0A192F]/80 text-xs rounded text-gray-300 border border-[#64FFDA]/20"
                     >
                       {tech}
-                    </motion.span>
+                    </span>
                   ))}
-                  {item.technologies.length > 3 && (
-                    <span className="px-2 py-1 bg-[#1D2D50]/80 text-xs rounded-full text-[#00D2D2] border border-[#00D2D2]/20">
-                      +{item.technologies.length - 3}
+                  {item.technologies.length > (isMobile ? 3 : 4) && (
+                    <span className="px-2 py-1 bg-[#0A192F]/80 text-xs rounded text-[#64FFDA]">
+                      +{item.technologies.length - (isMobile ? 3 : 4)}
                     </span>
                   )}
                 </div>
               </div>
             </motion.div>
-
-            {/* Expanded View */}
-            <AnimatePresence>
-              {activeIndex === index && (
-                <motion.div
-                  layoutId={`container-${index}`}
-                  className="fixed inset-0 z-50 flex items-center justify-center p-8 bg-black/80"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                  onClick={(e) => e.target === e.currentTarget && handleCardClick(index)}
-                >
-                  <motion.div
-                    className="relative bg-[#112240]/95 backdrop-blur-md rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border border-[#00D2D2]/25"
-                    initial={{ scale: 0.95 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {/* Header */}
-                    <motion.div 
-                      className="p-6 bg-[#0A192F] border-b border-[#00D2D2]/20"
-                      initial={{ y: -50 }}
-                      animate={{ y: 0 }}
-                      transition={{ delay: 0.1 }}
-                    >
-                      <button
-                        onClick={() => handleCardClick(index)}
-                        className="absolute top-4 right-4 text-gray-400 hover:text-[#00D2D2] transition-colors"
-                      >
-                        <X size={24} />
-                      </button>
-                      <motion.span 
-                        className="inline-block px-4 py-1 rounded-full bg-[#00D2D2]/10 text-[#00D2D2] text-sm font-medium mb-3"
-                        whileHover={{ backgroundColor: "#00D2D2", color: "#0A192F" }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {item.period}
-                      </motion.span>
-                      <h3 className="text-2xl font-semibold text-white mb-2">{item.role}</h3>
-                      <div className="flex items-center space-x-2">
-                        <Building size={18} className="text-[#00D2D2]" />
-                        <h4 className="text-lg text-gray-300">{item.company}</h4>
-                      </div>
-                    </motion.div>
-
-                    {/* Scrollable Content */}
-                    <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
-                      <h5 className="text-lg font-medium text-[#00D2D2] mb-4">Key Responsibilities</h5>
-                      <ul className="space-y-3 text-gray-300 text-sm">
-                        {item.responsibilities.map((responsibility, idx) => (
-                          <motion.li
-                            key={idx}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.05 }}
-                            className="flex items-start"
-                          >
-                            <span className="text-[#00D2D2] mr-2 mt-1">•</span>
-                            <span>{responsibility}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-
-                      <h5 className="text-lg font-medium text-[#00D2D2] mt-6 mb-4">Technologies</h5>
-                      <div className="flex flex-wrap gap-2">
-                        {item.technologies.map((tech, idx) => (
-                          <motion.span
-                            key={idx}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 + idx * 0.03 }}
-                            whileHover={{ 
-                              scale: 1.05, 
-                              backgroundColor: "#00D2D2", 
-                              color: "#0A192F"
-                            }}
-                            className="px-3 py-1 bg-[#1D2D50]/80 text-sm rounded-full text-gray-200 border border-[#00D2D2]/30"
-                          >
-                            {tech}
-                          </motion.span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Stats */}
-                    <motion.div
-                      className="p-6 bg-[#0A192F]/50 border-t border-[#00D2D2]/20 grid grid-cols-2 gap-4"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <div className="text-center">
-                        <motion.div className="text-3xl font-semibold text-[#00D2D2]" whileHover={{ scale: 1.05 }}>
-                          {index + 1 < 10 ? `0${index + 1}` : index + 1}
-                        </motion.div>
-                        <div className="text-sm text-gray-400">Years</div>
-                      </div>
-                      <div className="text-center">
-                        <motion.div className="text-3xl font-semibold text-[#00D2D2]" whileHover={{ scale: 1.05 }}>
-                          {item.technologies.length}
-                        </motion.div>
-                        <div className="text-sm text-gray-400">Technologies</div>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </motion.div>
         ))}
       </div>
 
-      {/* Subtle Hint */}
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 0.6, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="relative z-10 mt-12 text-center text-gray-400 text-sm"
-      >
-        Click a card to view details
-      </motion.div>
+      {/* Expanded View Modal */}
+      <AnimatePresence>
+        {activeIndex !== null && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A192F]/90 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.target === e.currentTarget && handleCardClick(activeIndex)}
+          >
+            <motion.div
+              className="relative bg-[#112240] rounded-lg w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-lg border border-[#64FFDA]/20"
+              initial={{ scale: 0.95, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 10 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Modal Header */}
+              <div className="p-5 md:p-6 bg-[#0A192F] border-b border-[#64FFDA]/20 relative">
+                <button
+                  onClick={() => handleCardClick(activeIndex)}
+                  className="absolute top-4 right-4 text-white hover:text-[#64FFDA] transition-colors p-2"
+                >
+                  <X size={20} />
+                </button>
+                
+                <div className="flex items-center space-x-3 mb-4">
+                  <span className="px-3 py-1 rounded text-xs font-medium text-[#64FFDA] bg-[#64FFDA]/10">
+                    {experienceData[activeIndex].period}
+                  </span>
+                </div>
+                
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{experienceData[activeIndex].role}</h3>
+                <div className="flex items-center space-x-2">
+                  <Building size={16} className="text-[#64FFDA]" />
+                  <h4 className="text-base md:text-lg text-gray-300">{experienceData[activeIndex].company}</h4>
+                </div>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="p-5 md:p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+                <div>
+                  <h5 className="text-base font-medium text-[#64FFDA] mb-4 flex items-center">
+                    <span className="w-5 h-px bg-[#64FFDA] mr-3"></span>
+                    Responsibilities
+                  </h5>
+                  <ul className="space-y-3 text-gray-200 text-sm ml-5">
+                    {experienceData[activeIndex].responsibilities.map((responsibility, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start"
+                      >
+                        <div className="flex-shrink-0 mr-3 mt-1.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#64FFDA]"></div>
+                        </div>
+                        <span className="flex-1">{responsibility}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <h5 className="text-base font-medium text-[#64FFDA] mt-6 mb-4 flex items-center">
+                    <span className="w-5 h-px bg-[#64FFDA] mr-3"></span>
+                    Technologies
+                  </h5>
+                  <div className="flex flex-wrap gap-2">
+                    {experienceData[activeIndex].technologies.map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 bg-[#0A192F] text-xs rounded text-gray-300 border border-[#64FFDA]/20"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="p-4 md:p-5 bg-[#0A192F] border-t border-[#64FFDA]/20 flex justify-between items-center">
+                <div className="text-xs text-gray-400">
+                  Position {activeIndex + 1} of {experienceData.length}
+                </div>
+                <div className="flex items-center space-x-1 text-xs text-[#64FFDA]">
+                  <Award size={14} className="text-[#64FFDA]" />
+                  <span>{experienceData[activeIndex].technologies.length} skills</span>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Subtle interaction hint */}
+      <div className="relative z-10 mt-6 text-center">
+        <span className="text-gray-400 text-xs">
+          Click on a card to view details
+        </span>
+      </div>
     </section>
-  )
+  );
 }

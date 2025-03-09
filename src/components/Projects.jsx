@@ -103,17 +103,34 @@ export default function Projects() {
               
               {/* Company Tag */}
               {project.company && (
-                <motion.span
-                  className="inline-block px-4 py-1.5 bg-[#0A192F]/90 text-sm rounded-full text-[#26A69A] border border-[#26A69A]/50 mb-4 font-medium tracking-wide"
-                  whileHover={{
-                    backgroundColor: "#26A69A",
-                    color: "#0A192F",
-                    borderColor: "#26A69A",
-                    transition: { duration: 0.2 }
-                  }}
-                >
-                  {project.company}
-                </motion.span>
+                project.companyLink ? (
+                  <motion.a
+                    className="inline-block px-4 py-1.5 bg-[#0A192F]/90 text-sm rounded-full text-[#26A69A] border border-[#26A69A]/50 mb-4 font-medium tracking-wide cursor-pointer"
+                    whileHover={{
+                      backgroundColor: "#26A69A",
+                      color: "#0A192F",
+                      borderColor: "#26A69A",
+                      transition: { duration: 0.2 }
+                    }}
+                    href={project.companyLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {project.company}
+                  </motion.a>
+                ) : (
+                  <motion.span
+                    className="inline-block px-4 py-1.5 bg-[#0A192F]/90 text-sm rounded-full text-[#26A69A] border border-[#26A69A]/50 mb-4 font-medium tracking-wide"
+                    whileHover={{
+                      backgroundColor: "#26A69A",
+                      color: "#0A192F",
+                      borderColor: "#26A69A",
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    {project.company}
+                  </motion.span>
+                )
               )}
 
               {/* Tech Tags */}

@@ -50,6 +50,7 @@ export const experienceData = [
       github: "https://github.com/shikhar-dwivedi/ecommerce",
       live: "https://clinixsphere.in",
       company: "Clinix Sphere",
+      companyLink: "https://clinixsphere.in",
     },
     {
       title: "Billoora - Expense Manager",
@@ -60,6 +61,7 @@ export const experienceData = [
       github: null,
       live: "https://dashboard.billoora.com/",
       company: "Madquick Pvt. Ltd.",
+      companyLink: "https://madquick.in",
     },
     {
       title: "Invoice Generator",
@@ -70,6 +72,7 @@ export const experienceData = [
       github: null,
       live: null,
       company: "Madquick Pvt. Ltd.", 
+      companyLink: "https://madquick.in",
     },
     {
       title: "FRLI",
@@ -78,8 +81,9 @@ export const experienceData = [
       image: "https://res.cloudinary.com/dlzkqms1c/image/upload/v1740686418/Screenshot_2025-02-28_at_1.28.51_AM_u21lt0.png",
       technologies: ["JavaScript", "React", "Node.js", "Stripe", "Clerk"],
       github: null,
-      live: "app.frli.co",
+      live: "https://app.frli.co",
       company: "PlayTheory Labs",
+      companyLink: "https://www.playtheory.xyz",
     },
     {
       title: "Spoty Servers - Spotify Downloader",
@@ -90,6 +94,7 @@ export const experienceData = [
       github: null,
       live: null,
       company: "Madquick Pvt. Ltd.",
+      companyLink: "https://madquick.in",
     },
     {
       title: "GRWU : Grow With Us",
@@ -100,6 +105,7 @@ export const experienceData = [
       github: null,
       live: "https://grwu.online",
       company: "GRWU",
+      companyLink: "https://grwu.online",
     },
   ]
   
@@ -124,11 +130,6 @@ export const experienceData = [
       url: "https://www.linkedin.com/in/shikhar-dwivedi2003/",
     },
     {
-      platform: "Instagram",
-      username: "@shikhar___d",
-      url: "https://www.instagram.com/shikhar___d/",
-    },
-    {
       platform: "Portfolio",
       username: "shikhar.info",
       url: "https://shikhar.info",
@@ -136,7 +137,7 @@ export const experienceData = [
     {
       platform: "Resume",
       username: "Download CV",
-      url: "/resume.pdf",
+      url: "https://drive.google.com/file/d/1AWhNOxXk1vtBwZRPO7zBVxTRkKZ7u9L_/view?usp=sharing",
     },
   ]
   
