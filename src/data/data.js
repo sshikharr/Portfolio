@@ -137,7 +137,7 @@ export const experienceData = [
     {
       platform: "Resume",
       username: "Download CV",
-      url: "https://drive.google.com/file/d/1AWhNOxXk1vtBwZRPO7zBVxTRkKZ7u9L_/view?usp=sharing",
+      url: "https://drive.google.com/file/d/1KAioZ6PIWRJxjlqELunMGAuM8PqAVeWf/view?usp=sharing",
     },
   ]
   
